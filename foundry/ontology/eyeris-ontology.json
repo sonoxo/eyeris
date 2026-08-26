@@ -1,0 +1,66 @@
+{
+  "name": "EYERIS GeoVision Ontology Contract",
+  "version": "0.1.0",
+  "coordinateReferenceSystem": "WGS84",
+  "objectTypes": [
+    {
+      "apiName": "Camera",
+      "primaryKey": "cameraId",
+      "properties": {
+        "cameraId": "string",
+        "label": "string",
+        "status": "string",
+        "location": "geopoint",
+        "fieldOfView": "geoshape"
+      }
+    },
+    {
+      "apiName": "Detection",
+      "primaryKey": "detectionId",
+      "properties": {
+        "detectionId": "string",
+        "cameraId": "string",
+        "mediaReference": "string",
+        "detectedClass": "string",
+        "confidence": "double",
+        "observedAt": "timestamp",
+        "modelVersion": "string",
+        "location": "geopoint",
+        "fieldOfView": "geoshape",
+        "boundingBoxJson": "string",
+        "reviewState": "string"
+      }
+    }
+  ],
+  "linkTypes": [
+    {
+      "apiName": "CameraDetections",
+      "from": "Camera",
+      "to": "Detection",
+      "cardinality": "ONE_TO_MANY",
+      "fromKey": "cameraId",
+      "toKey": "cameraId"
+    }
+  ],
+  "actions": [
+    {
+      "apiName": "flagDetectionForReview",
+      "objectType": "Detection",
+      "effect": "set reviewState=FLAGGED"
+    },
+    {
+      "apiName": "clearDetectionReview",
+      "objectType": "Detection",
+      "effect": "set reviewState=CLEARED"
+    }
+  ],
+  "privacyBoundary": {
+    "mode": "NON_IDENTIFYING_OBJECT_SCENE_RECOGNITION",
+    "forbidden": [
+      "face recognition",
+      "biometric embeddings",
+      "named-person lookup",
+      "persistent individual tracking"
+    ]
+  }
+}
