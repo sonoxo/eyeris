@@ -6,6 +6,8 @@ adapter library selected for the EYERIS container-backed model version.
 
 from __future__ import annotations
 
+import json
+
 import pandas as pd
 import palantir_models as pm
 import requests
@@ -80,7 +82,7 @@ class EyerisContainerAdapter(pm.ContainerModelAdapter):
                         "confidence": float(detection["confidence"]),
                         "observedAt": detection["observed_at"],
                         "modelVersion": detection["model_version"],
-                        "boundingBoxJson": pd.io.json.dumps(detection.get("bounding_box")),
+                        "boundingBoxJson": json.dumps(detection.get("bounding_box")),
                     }
                 )
         return pd.DataFrame(records)
