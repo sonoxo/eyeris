@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=75", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "eyeris-geovision"
+version = "0.1.0"
+description = "Privacy-bounded geospatial object and scene recognition contracts for the Sonoxo VA3LM ecosystem."
+requires-python = ">=3.11"
+dependencies = []
+
+[project.optional-dependencies]
+vision = ["ultralytics>=8.3", "pillow>=10"]
+server = ["fastapi>=0.115", "uvicorn>=0.30"]
+dev = ["pytest>=8.3"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
