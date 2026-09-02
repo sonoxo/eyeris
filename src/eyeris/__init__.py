@@ -13,18 +13,34 @@ from .multimodal import (
     TargetBounds,
     TargetRegistry,
 )
+from .runtime import (
+    ActionReceipt,
+    DefaultPolicyGate,
+    EyerisRuntime,
+    InMemoryActionAdapter,
+    InteractionFrame,
+    InteractionResult,
+    PolicyDecision,
+)
 
 __all__ = [
+    "ActionReceipt",
     "BoundingBox",
     "Camera",
+    "DefaultPolicyGate",
     "Detection",
-    "SceneObservation",
     "Detector",
-    "MockDetector",
+    "EyerisRuntime",
     "GazeSample",
     "GazeSmoother",
+    "InMemoryActionAdapter",
+    "InteractionFrame",
+    "InteractionResult",
+    "MockDetector",
     "MultimodalIntentEngine",
     "NormalizedPoint",
+    "PolicyDecision",
+    "SceneObservation",
     "SemanticCommand",
     "SemanticTarget",
     "TargetBounds",
@@ -34,4 +50,4 @@ __all__ = [
     "run_inference",
 ]
 
-__version__ = "0.2.0"
+__version__ = "0.3.0"
