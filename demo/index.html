@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ZYRA EYERIS — Multimodal Demo</title>
+  <style>
+    :root{color-scheme:dark;--bg:#07080d;--panel:#0d1020;--panel2:#11162b;--text:#f5f7ff;--muted:#9aa4bd;--purple:#8b5cf6;--orange:#f97316;--cyan:#22d3ee;--green:#22c55e;--amber:#f59e0b;--red:#ef4444;--line:#25304f}
+    *{box-sizing:border-box} body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:radial-gradient(circle at 20% 0%,#15112b 0,transparent 30%),radial-gradient(circle at 85% 20%,#1b1020 0,transparent 28%),var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+    button{font:inherit} .shell{max-width:1500px;margin:auto;padding:28px}.hero{display:grid;grid-template-columns:1.25fr .75fr;gap:22px;align-items:stretch}.card{background:linear-gradient(180deg,rgba(17,22,43,.94),rgba(10,13,25,.96));border:1px solid rgba(139,92,246,.2);border-radius:24px;box-shadow:0 18px 60px rgba(0,0,0,.35)}
+    .headline{padding:34px;position:relative;overflow:hidden}.eyebrow{font-size:12px;letter-spacing:.22em;color:#c4b5fd;font-weight:800}.headline h1{font-size:clamp(42px,7vw,88px);line-height:.88;margin:14px 0 18px;letter-spacing:-.055em}.headline p{font-size:18px;line-height:1.6;color:var(--muted);max-width:780px}.chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}.chip{border:1px solid #303956;border-radius:999px;padding:8px 11px;font-size:12px;color:#dbe3f7;background:#0b0e19}.pulse-orbit{position:absolute;width:420px;height:420px;border:1px solid rgba(139,92,246,.22);border-radius:50%;right:-180px;top:-180px;animation:orbit 9s linear infinite}.pulse-orbit:after{content:"";position:absolute;width:9px;height:9px;background:var(--orange);border-radius:50%;top:50%;left:-5px;box-shadow:0 0 24px var(--orange)}@keyframes orbit{to{transform:rotate(360deg)}}
+    .status{padding:28px}.status h2,.section h2{margin:0 0 14px;font-size:18px}.state{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid #222a43}.state:last-child{border-bottom:0}.dot{width:10px;height:10px;border-radius:50%;display:inline-block;margin-right:8px;box-shadow:0 0 16px currentColor}.green{color:var(--green)}.purple{color:#a78bfa}.orange{color:#fb923c}.cyan{color:#67e8f9}
+    .controls{display:flex;gap:10px;flex-wrap:wrap;margin:24px 0}.btn{border:1px solid #37415f;background:#11172a;color:white;border-radius:12px;padding:12px 16px;cursor:pointer;transition:.18s transform,.18s border-color}.btn:hover{transform:translateY(-1px);border-color:#7c3aed}.btn.primary{background:linear-gradient(135deg,#6d28d9,#9333ea);border-color:#a78bfa}.btn.warn{background:#2a1710;border-color:#9a4317}.btn[disabled]{opacity:.45;cursor:not-allowed;transform:none}
+    .stage{position:relative;min-height:650px;padding:18px;overflow:hidden}.grid{position:absolute;inset:0;background-image:linear-gradient(rgba(139,92,246,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(139,92,246,.055) 1px,transparent 1px);background-size:34px 34px;mask-image:linear-gradient(to bottom,#000,transparent)}
+    .hud{position:relative;z-index:2;display:grid;grid-template-columns:1fr 390px;gap:16px}.workspace{position:relative;min-height:600px;border:1px solid #27304b;border-radius:18px;background:rgba(7,10,18,.82);padding:18px;overflow:hidden}.workspace-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}.workspace-title{font-weight:800}.mini{font-size:12px;color:var(--muted)}
+    .targets{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.target{position:relative;text-align:left;min-height:170px;border:1px solid #2a3452;border-radius:18px;padding:20px;background:linear-gradient(180deg,#12172a,#0c1020);color:white;overflow:hidden;transition:.2s;border-color,.2s transform,.2s box-shadow}.target strong{display:block;font-size:20px;margin:8px 0}.target span{font-size:13px;color:var(--muted);line-height:1.5}.target.active{border-color:var(--cyan);transform:scale(1.012);box-shadow:0 0 0 1px rgba(34,211,238,.25),0 0 42px rgba(34,211,238,.13)}.target.action{border-color:var(--green);box-shadow:0 0 42px rgba(34,197,94,.15)}.tag{font-size:10px!important;text-transform:uppercase;letter-spacing:.16em;color:#a5b4fc!important}.corner{position:absolute;right:14px;top:14px;width:22px;height:22px;border-right:2px solid #47577f;border-top:2px solid #47577f}
+    .gaze{position:absolute;z-index:8;width:32px;height:32px;border:2px solid var(--cyan);border-radius:50%;pointer-events:none;left:22%;top:30%;transform:translate(-50%,-50%);transition:left .72s cubic-bezier(.2,.85,.2,1),top .72s cubic-bezier(.2,.85,.2,1),opacity .3s;box-shadow:0 0 25px rgba(34,211,238,.65),inset 0 0 18px rgba(34,211,238,.35)}.gaze:before,.gaze:after{content:"";position:absolute;background:var(--cyan)}.gaze:before{width:1px;height:52px;left:14px;top:-12px}.gaze:after{height:1px;width:52px;left:-12px;top:14px}.gaze.locked{animation:lock .65s ease-out}@keyframes lock{50%{transform:translate(-50%,-50%) scale(1.65);opacity:.45}100%{transform:translate(-50%,-50%) scale(1)}}
+    .rail{display:flex;flex-direction:column;gap:12px}.panel{border:1px solid #27304b;border-radius:16px;background:#0b0f1c;padding:16px}.panel h3{font-size:13px;margin:0 0 12px;letter-spacing:.08em;text-transform:uppercase;color:#cbd5e1}.flow{display:flex;flex-direction:column;gap:8px}.step{display:grid;grid-template-columns:28px 1fr auto;align-items:center;gap:10px;padding:9px 10px;border-radius:10px;border:1px solid #212943;color:#aab4cb;font-size:13px;transition:.2s}.step.active{background:#17162f;color:#fff;border-color:#7c3aed}.step.done{border-color:#235c38;color:#b9f6ca}.num{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:#161b2b;font-size:11px}.step.active .num{background:#6d28d9}.step.done .num{background:#14532d}.badge{font-size:10px;padding:4px 7px;border-radius:999px;background:#171c2c}.voicebox{min-height:65px;color:#e9d5ff;line-height:1.45}.audit{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;line-height:1.55;color:#a5f3fc;max-height:145px;overflow:auto;white-space:pre-wrap}
+    .section{margin-top:24px;padding:26px}.usecases{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.usecase{border:1px solid #29324d;border-radius:16px;padding:18px;background:#0c1020;cursor:pointer}.usecase.active{border-color:var(--orange);background:#17110f}.usecase b{display:block;margin:7px 0}.usecase p{color:var(--muted);font-size:13px;line-height:1.5;margin:0}.solution{margin-top:18px;display:grid;grid-template-columns:.85fr 1.15fr;gap:18px}.solution-box{border:1px solid #29324d;border-radius:16px;padding:20px;background:#0a0e1a}.solution-box h3{margin:0 0 12px}.solution-box ul{padding-left:20px;color:#bdc7dc;line-height:1.7}.impl{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;line-height:1.65;color:#c7d2fe;white-space:pre-wrap}
+    .footer{color:#747f98;text-align:center;padding:28px;font-size:12px}.flash{animation:flash .55s ease}@keyframes flash{50%{background:#17331f}}
+    @media(max-width:1050px){.hero,.hud,.solution{grid-template-columns:1fr}.usecases{grid-template-columns:repeat(2,1fr)}.rail{display:grid;grid-template-columns:repeat(2,1fr)}}@media(max-width:680px){.shell{padding:14px}.headline{padding:24px}.targets,.usecases,.rail{grid-template-columns:1fr}.workspace{min-height:720px}.stage{padding:10px}.headline h1{font-size:48px}}
+    @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
+  </style>
+</head>
+<body>
+  <main class="shell" id="app">
+    <section class="hero">
+      <div class="card headline">
+        <div class="pulse-orbit"></div>
+        <div class="eyebrow">ZYRA // EYERIS // MULTIMODAL CONTROL</div>
+        <h1>LOOK.<br>SPEAK.<br>ACT.</h1>
+        <p>EYERIS treats gaze as context, not a shaky mouse cursor. The operator looks at a meaningful target, adds intent with voice or gesture, then SHADOW GLASS decides whether the app-native action may execute.</p>
+        <div class="chips"><span class="chip">GAZE TARGETING</span><span class="chip">VOICE INTENT</span><span class="chip">GESTURE CONFIRM</span><span class="chip">SHADOW GLASS</span><span class="chip">GLASS ONION AUDIT</span></div>
+      </div>
+      <aside class="card status">
+        <h2>System state</h2>
+        <div class="state"><span><i class="dot green"></i>Semantic target registry</span><b>ONLINE</b></div>
+        <div class="state"><span><i class="dot cyan"></i>Gaze context</span><b>LOCAL</b></div>
+        <div class="state"><span><i class="dot purple"></i>SHADOW GLASS policy</span><b>GATED</b></div>
+        <div class="state"><span><i class="dot orange"></i>High-impact actions</span><b>CONFIRM</b></div>
+        <div class="state"><span><i class="dot green"></i>Raw gaze in audit</span><b>OFF</b></div>
+      </aside>
+    </section>
+
+    <div class="controls">
+      <button class="btn primary" id="run">▶ Run guided demo</button>
+      <button class="btn" id="next">Next step</button>
+      <button class="btn" id="pause">Pause motion</button>
+      <button class="btn warn" id="reset">Reset</button>
+    </div>
+
+    <section class="card stage" aria-label="Interactive EYERIS product demo">
+      <div class="grid"></div>
+      <div class="hud">
+        <div class="workspace" id="workspace">
+          <div class="workspace-top"><div><div class="workspace-title">FIELD OPERATIONS // AUTHORIZED DEMO</div><div class="mini" id="scenarioLabel">Maintenance readiness</div></div><div class="mini">APP STATE: CONNECTED</div></div>
+          <div class="targets" id="targets">
+            <button class="target" data-id="pump" data-x="25" data-y="32"><span class="tag">Maintenance asset</span><strong>Hydraulic Pump A</strong><span>Readiness 72% · vibration anomaly detected · last service 19 days ago</span><i class="corner"></i></button>
+            <button class="target" data-id="route" data-x="74" data-y="32"><span class="tag">Logistics route</span><strong>Convoy Route 4</strong><span>2 maintenance holds · weather advisory · alternate route available</span><i class="corner"></i></button>
+            <button class="target" data-id="alert" data-x="25" data-y="67"><span class="tag">Defensive cyber</span><strong>Endpoint Alert 17</strong><span>Suspicious process blocked · evidence preserved · review pending</span><i class="corner"></i></button>
+            <button class="target" data-id="brief" data-x="74" data-y="67"><span class="tag">Intel briefing</span><strong>Black House Brief</strong><span>5 source-linked updates · confidence HIGH · 1 unresolved collection gap</span><i class="corner"></i></button>
+          </div>
+          <div class="gaze" id="gaze" aria-hidden="true"></div>
+        </div>
+        <aside class="rail">
+          <div class="panel"><h3>Interaction pipeline</h3><div class="flow" id="flow"></div></div>
+          <div class="panel"><h3>Operator intent</h3><div class="voicebox" id="voice">Waiting for multimodal input…</div></div>
+          <div class="panel"><h3>Glass Onion evidence</h3><div class="audit" id="audit">{ "stage": "IDLE" }</div></div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="card section">
+      <h2>Real-world solution walkthroughs</h2>
+      <div class="usecases" id="usecases"></div>
+      <div class="solution">
+        <div class="solution-box"><h3 id="solutionTitle"></h3><div id="solutionBody"></div></div>
+        <div class="solution-box"><h3>Implementation path</h3><div class="impl" id="implementation"></div></div>
+      </div>
+    </section>
+
+    <div class="footer">This is a simulated product demonstration. Camera, microphone, operating-system input and production AIP/Foundry adapters must be connected in an authorized environment before real-world deployment.</div>
+  </main>
+<script>
+(() => {
+  const steps = [
+    {name:'GAZE', status:'FOCUS', target:'pump', voice:'Operator looks at Hydraulic Pump A.', audit:{stage:'FOCUS',targetId:'pump',modality:'gaze'}},
+    {name:'VOICE', status:'INTENT', target:'pump', voice:'“Open maintenance history.”', audit:{stage:'INTENT',targetId:'pump',action:'open',modalities:['gaze','voice'],confidence:.8}},
+    {name:'SHADOW GLASS', status:'POLICY', target:'pump', voice:'Policy checks scope, confidence and environment.', audit:{stage:'POLICY',targetId:'pump',action:'open',policyState:'GREEN',policyReason:'bounded semantic action eligible'}},
+    {name:'GLASS ONION', status:'OBSERVE', target:'pump', voice:'Intent, tool, execution and result are observable.', audit:{stage:'OBSERVABILITY',targetId:'pump',tool:'maintenance.openHistory',rawGazeStored:false}},
+    {name:'ACTION', status:'EXECUTE', target:'pump', voice:'Maintenance history opens in the app.', audit:{stage:'EXECUTED',targetId:'pump',action:'open',receipt:{ok:true,message:'Opened maintenance history'}}},
+    {name:'EVIDENCE', status:'DONE', target:'pump', voice:'Result is validated and an audit receipt is retained.', audit:{stage:'VERIFIED',targetId:'pump',result:'PASS',rawGazeStored:false}}
+  ];
+  const useCases = [
+    {id:'maintenance',title:'Maintenance & readiness',sub:'Look at equipment → ask for history → create bounded work.',body:'<ul><li>Hands remain available for physical work.</li><li>Semantic targeting avoids tiny controls and cursor jitter.</li><li>High-impact writes can require explicit confirmation.</li><li>Every action can produce a traceable receipt.</li></ul>',impl:'Camera / eye tracker\n  → local GazeAdapter\nSemantic app target registry\n  → Hydraulic Pump A\nVoiceAdapter\n  → “open maintenance history”\nEyerisRuntime\n  → SHADOW GLASS policy\nActionAdapter\n  → approved maintenance system action'},
+    {id:'accessibility',title:'Accessibility control',sub:'Use gaze as “this,” voice as “do this,” gesture as confirm.',body:'<ul><li>Reduces dependence on precision mouse movement.</li><li>Supports larger semantic targets instead of raw pixels.</li><li>Can combine gaze with voice, switch, pinch, nod or tap.</li><li>Raw gaze coordinates remain local by default.</li></ul>',impl:'Eye tracker\n  → gaze samples\nGazeSmoother\n  → stable semantic focus\nVoice / gesture\n  → action intent\nTargetRegistry\n  → allowed app-native actions\nPolicy gate\n  → execute / confirm / deny'},
+    {id:'cyber',title:'Defensive cyber operations',sub:'Look at an alert → explain → isolate only through approved tooling.',body:'<ul><li>Analyst attention becomes contextual input.</li><li>External model data egress remains policy-gated.</li><li>Containment actions can require human confirmation.</li><li>Evidence is retained for after-action review.</li></ul>',impl:'Alert card under gaze\n  → targetId endpoint-alert-17\nVoice: “explain this”\n  → read-only analysis\nVoice: “isolate endpoint”\n  → high-impact action\nSHADOW GLASS\n  → confirmation required\nEDR adapter\n  → authorized containment + receipt'},
+    {id:'intel',title:'Intel & field briefing',sub:'Look at a source-linked brief → ask questions without losing provenance.',body:'<ul><li>The Black House supplies source-linked context.</li><li>EYERIS makes the briefing hands-free and spatial.</li><li>Ontology objects provide structured meaning.</li><li>Confidence and collection gaps stay visible.</li></ul>',impl:'The Black House brief\n  → Ontology objects / evidence\nGaze selects section or object\nVoice asks: “why is this high confidence?”\nAgent retrieves source-linked evidence\nSHADOW GLASS governs model/tool boundary\nUI renders answer + source provenance'}
+  ];
+
+  const gaze = document.querySelector('#gaze');
+  const flow = document.querySelector('#flow');
+  const voice = document.querySelector('#voice');
+  const audit = document.querySelector('#audit');
+  const targetEls = [...document.querySelectorAll('.target')];
+  const runBtn = document.querySelector('#run');
+  const nextBtn = document.querySelector('#next');
+  const pauseBtn = document.querySelector('#pause');
+  const resetBtn = document.querySelector('#reset');
+  const usecaseRoot = document.querySelector('#usecases');
+  let index = -1, timer = null, paused = false;
+
+  function renderFlow(){flow.innerHTML = steps.map((s,i)=>`<div class="step ${i<index?'done':i===index?'active':''}"><span class="num">${i+1}</span><span>${s.name}</span><span class="badge">${i<index?'PASS':i===index?s.status:'WAIT'}</span></div>`).join('')}
+  function clearTargets(){targetEls.forEach(el=>el.classList.remove('active','action'))}
+  function renderStep(i){
+    index=i; clearTargets(); const s=steps[i]; const el=document.querySelector(`[data-id="${s.target}"]`); if(el){el.classList.add(i>=4?'action':'active'); gaze.style.left=el.dataset.x+'%'; gaze.style.top=el.dataset.y+'%'; gaze.classList.remove('locked'); void gaze.offsetWidth; gaze.classList.add('locked')}
+    voice.textContent=s.voice; audit.textContent=JSON.stringify(s.audit,null,2); audit.parentElement.classList.remove('flash'); void audit.parentElement.offsetWidth; audit.parentElement.classList.add('flash'); renderFlow();
+  }
+  function next(){if(index>=steps.length-1){stop();return} renderStep(index+1)}
+  function run(){stop(); index=-1; renderFlow(); next(); timer=setInterval(next,1450); runBtn.textContent='▶ Running demo…'; runBtn.disabled=true}
+  function stop(){if(timer)clearInterval(timer);timer=null;runBtn.textContent='▶ Run guided demo';runBtn.disabled=false}
+  function reset(){stop();index=-1;clearTargets();gaze.style.left='22%';gaze.style.top='30%';voice.textContent='Waiting for multimodal input…';audit.textContent='{ "stage": "IDLE" }';renderFlow()}
+  function togglePause(){paused=!paused; document.documentElement.style.setProperty('--motion',paused?'0':'1'); if(paused){stop();gaze.style.transition='none';pauseBtn.textContent='Resume motion'}else{gaze.style.transition='left .72s cubic-bezier(.2,.85,.2,1), top .72s cubic-bezier(.2,.85,.2,1)';pauseBtn.textContent='Pause motion'}}
+
+  runBtn.addEventListener('click',run); nextBtn.addEventListener('click',()=>{stop();next()}); resetBtn.addEventListener('click',reset); pauseBtn.addEventListener('click',togglePause);
+  targetEls.forEach(el=>el.addEventListener('click',()=>{stop();clearTargets();el.classList.add('active');gaze.style.left=el.dataset.x+'%';gaze.style.top=el.dataset.y+'%';voice.textContent=`Manual simulation: gaze locked on ${el.querySelector('strong').textContent}.`;audit.textContent=JSON.stringify({stage:'FOCUS',targetId:el.dataset.id,source:'manual-demo'},null,2)}));
+
+  useCases.forEach((u,i)=>{const b=document.createElement('button');b.className='usecase'+(i===0?' active':'');b.type='button';b.innerHTML=`<span class="tag">REAL-WORLD LANE</span><b>${u.title}</b><p>${u.sub}</p>`;b.addEventListener('click',()=>selectUsecase(u,b));usecaseRoot.appendChild(b)});
+  function selectUsecase(u,b){document.querySelectorAll('.usecase').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.querySelector('#solutionTitle').textContent=u.title;document.querySelector('#solutionBody').innerHTML=u.body;document.querySelector('#implementation').textContent=u.impl}
+  selectUsecase(useCases[0],usecaseRoot.firstElementChild); renderFlow();
+})();
+</script>
+</body>
+</html>
