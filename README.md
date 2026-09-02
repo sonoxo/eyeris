@@ -4,7 +4,7 @@
 
 **Multimodal, app-aware gaze + voice + gesture control with non-identifying visual intelligence and Foundry-ready geospatial context.**
 
-`IMPLEMENTED` · `MULTIMODAL` · `NON-IDENTIFYING` · `APP-AWARE` · `WGS84` · `FOUNDRY READY`
+`IMPLEMENTED` · `MULTIMODAL` · `NON-IDENTIFYING` · `APP-AWARE` · `POLICY-GATED` · `FOUNDRY READY`
 
 </div>
 
@@ -45,9 +45,48 @@ Full implementation guide: [docs/EYERIS-MULTIMODAL.md](docs/EYERIS-MULTIMODAL.md
 
 ---
 
+## 🎬 Run the motion demo
+
+The repository now contains a **real coded interactive demo**, not a rendered concept image.
+
+**Demo source:** [`demo/index.html`](demo/index.html)
+
+```bash
+git clone https://github.com/sonoxo/eyeris.git
+cd eyeris
+python -m http.server 8000 --directory demo
+```
+
+Open `http://localhost:8000`.
+
+The demo animates the complete product loop:
+
+```text
+GAZE LOCK
+  → VOICE INTENT
+  → SHADOW GLASS POLICY
+  → GLASS ONION OBSERVABILITY
+  → APP ACTION
+  → EVIDENCE RECEIPT
+```
+
+It also includes clickable real-world solution walkthroughs for:
+
+- accessibility / hands-free computer control;
+- maintenance and readiness;
+- defensive cybersecurity;
+- Black House intelligence briefing;
+- logistics and operational coordination.
+
+The page is intentionally a **sensor simulation**. It does not request camera or microphone permission. This lets anyone review the interaction model before hardware adapters are connected.
+
+**Real-world implementation guide:** [docs/REAL_WORLD_SOLUTIONS.md](docs/REAL_WORLD_SOLUTIONS.md)
+
+---
+
 ## ✅ What exists now
 
-EYERIS currently contains two complementary capability planes.
+EYERIS currently contains three complementary capability planes.
 
 ### 1. Multimodal intent control
 
@@ -66,7 +105,22 @@ Implemented in [`src/eyeris/multimodal.py`](src/eyeris/multimodal.py):
 
 Tests: [`tests/test_multimodal.py`](tests/test_multimodal.py)
 
-### 2. Geospatial visual intelligence
+### 2. Policy-gated runtime orchestration
+
+Implemented in [`src/eyeris/runtime.py`](src/eyeris/runtime.py):
+
+- one bounded `InteractionFrame` for gaze, voice, gesture and confirmation state;
+- semantic command resolution through the multimodal engine;
+- conservative `DefaultPolicyGate` for local/demo workflows;
+- RED blocking for restricted/unknown execution environments;
+- explicit confirmation state for high-impact commands;
+- pluggable `ActionAdapter` interface;
+- deterministic in-memory adapter for safe demos/tests;
+- execution receipts and audit records without raw gaze coordinates.
+
+Tests: [`tests/test_runtime.py`](tests/test_runtime.py)
+
+### 3. Geospatial visual intelligence
 
 EYERIS also contains working Python contracts for camera metadata, object/scene detections, confidence filtering, normalized bounding boxes, WGS84 geospatial enrichment, an optional Ultralytics-compatible detector adapter, a container-friendly live inference service, a Docker runtime, Foundry Media Set and geospatial transforms, a Foundry container ModelAdapter, an Ontology contract, automated tests, and cross-platform CI.
 
@@ -83,9 +137,10 @@ Imagine a maintenance dashboard with a row for **Pump 7**.
 2. EYERIS resolves target = pump-7.
 3. You say: “open this.”
 4. EYERIS checks that pump-7 exposes an `open` action.
-5. The action is low impact, so it can execute immediately.
-6. Audit records: target=pump-7, action=open, modalities=gaze+voice.
-7. Raw eye coordinates are not written to the audit record.
+5. SHADOW GLASS evaluates the bounded request.
+6. The action adapter opens the approved maintenance view.
+7. Audit records target=pump-7, action=open, modalities=gaze+voice.
+8. Raw eye coordinates are not written to the audit record.
 ```
 
 For a higher-impact action:
@@ -109,8 +164,12 @@ No side effect until the approval gate passes
 | Part | What it does |
 |---|---|
 | `src/eyeris/multimodal.py` | Gaze smoothing, semantic targets, voice/gesture intent fusion, bounded commands |
+| `src/eyeris/runtime.py` | Policy-gated orchestration, confirmation, action adapters, receipts |
 | `tests/test_multimodal.py` | Interaction, privacy, confirmation, and low-confidence gaze tests |
-| `docs/EYERIS-MULTIMODAL.md` | Full design and next-layer architecture |
+| `tests/test_runtime.py` | Runtime policy, execution, and restricted-environment tests |
+| `demo/index.html` | Interactive motion-graphics product demonstration |
+| `docs/EYERIS-MULTIMODAL.md` | Multimodal architecture |
+| `docs/REAL_WORLD_SOLUTIONS.md` | Real-world solution and deployment patterns |
 | `docs/assets/eyeris-multimodal-loop.svg` | Animated visual of the interaction loop |
 
 ## 🌍 Geovision code map
@@ -155,6 +214,8 @@ No side effect until the approval gate passes
                        │
               voice + gesture intent
                        │
+                 EYERIS RUNTIME
+                       │
                   SHADOW GLASS
                        │
                   GLASS ONION
@@ -168,9 +229,7 @@ No side effect until the approval gate passes
 
 ## 🎯 Design target
 
-The target experience is:
-
-> **Look at an object → say what you want → EYERIS understands the app context → execute the correct semantic action.**
+> **Look at an object → say what you want → EYERIS understands the app context → policy evaluates authority → the correct semantic action executes.**
 
 For common operations, this should be faster and more reliable than asking an LLM to interpret screenshots or forcing the user to dwell-click tiny controls.
 
@@ -184,7 +243,7 @@ EYERIS remains intentionally **non-identifying**.
 
 Generic object and scene labels are supported, including generic `person` detections. The core rejects identity-oriented payload fields such as face embeddings, identity IDs, person names, and persistent subject identifiers.
 
-For gaze interaction, the new privacy rule is also explicit:
+For gaze interaction, the privacy rule is explicit:
 
 - raw eye landmarks should remain local whenever possible;
 - normalized gaze points are ephemeral interaction state;
@@ -234,8 +293,9 @@ uvicorn eyeris.model_server:app --host 0.0.0.0 --port 8080
 5. **Gesture runtime** — pinch, nod, shake and optional accessibility mappings.
 6. **Target hysteresis** — prevent adjacent controls from rapidly stealing focus.
 7. **Per-user calibration** — smoothing, target expansion, head-pose tolerance and modality preferences.
-8. **AIP action bridge** — map approved commands to governed Ontology Actions.
-9. **ZYRA shell integration** — one multimodal control layer across ZYRA surfaces.
+8. **SHADOW GLASS remote PDP** — replace local demo policy with governed policy-as-code.
+9. **AIP action bridge** — map approved commands to governed Ontology Actions.
+10. **ZYRA shell integration** — one multimodal control layer across ZYRA surfaces.
 
 ---
 
@@ -244,6 +304,6 @@ uvicorn eyeris.model_server:app --host 0.0.0.0 --port 8080
 - **Implemented:** present in source code.
 - **Verified:** exercised by reproducible tests/CI.
 - **Foundry-ready:** code shape and adapter contracts exist for Foundry integration.
-- **Deployed:** only after the target environment has actually run the model, transforms, Ontology, multimodal client, and app integration.
+- **Deployed:** only after the target environment has actually run the model, transforms, Ontology, multimodal client, policy service, and app integration.
 
-EYERIS multimodal semantic control is now **implemented in GitHub**. Full hands-free camera/voice/gesture operation still requires the live client adapters and calibration layers listed above.
+EYERIS multimodal semantic control, runtime orchestration, and the interactive motion demo are now **implemented in GitHub**. Full hands-free camera/voice/gesture operation still requires the live client adapters and calibration layers listed above.
