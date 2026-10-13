@@ -61,6 +61,13 @@ def test_high_impact_action_requires_confirmation() -> None:
     assert command.requires_confirmation is True
 
 
+
+def test_deictic_voice_text_does_not_invent_select_intent() -> None:
+    engine = _engine()
+    engine.observe_gaze(GazeSample(NormalizedPoint(0.20, 0.20)))
+    assert engine.command(voice_text="this") is None
+
+
 def test_raw_gaze_coordinates_are_not_written_to_audit_record() -> None:
     engine = _engine()
     engine.observe_gaze(GazeSample(NormalizedPoint(0.20, 0.20)))
