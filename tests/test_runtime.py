@@ -44,7 +44,20 @@ def test_gaze_plus_voice_executes_bounded_action() -> None:
     assert result.stage == "EXECUTED"
     assert result.receipt is not None
     assert result.receipt.message == "Opened maintenance history"
-    assert "x" not in str(result.audit).lower()
+    # Check structured key names recursively; words like EXECUTED contain 'x'
+    # but are not leaked gaze coordinates.
+    def contains_raw_coordinates(value: object) -> bool:
+        if isinstance(value, dict):
+            return any(
+                key in {"x", "y", "rawGaze", "raw_gaze", "coordinates"}
+                or contains_raw_coordinates(item)
+                for key, item in value.items()
+            )
+        if isinstance(value, (tuple, list)):
+            return any(contains_raw_coordinates(item) for item in value)
+        return False
+
+    assert not contains_raw_coordinates(result.audit)
 
 
 def test_high_impact_action_requires_confirmation() -> None:
