@@ -138,7 +138,7 @@ class TargetRegistry:
 
 _ACTION_TERMS: dict[str, tuple[str, ...]] = {
     "open": ("open", "show", "view"),
-    "select": ("select", "choose", "pick", "this"),
+    "select": ("select", "choose", "pick"),
     "navigate": ("navigate", "go", "switch"),
     "create": ("create", "new", "add"),
     "update": ("update", "edit", "change"),
